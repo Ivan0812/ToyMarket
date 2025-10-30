@@ -3,8 +3,14 @@ import express from "express";
 const router = express.Router();
 
 let products = [
-    { id: 1, name: "Lego Set", price: 50, condition: "used" },
-    { id: 2, name: "Barbie Doll" , price: 20, condition:"new" }
+    { id: 1, name: "Lego Bager", price: 8, condition: "used", image: "/images/IMG_2668.png" },
+    { id: 2, name: "Cat" , price: 5, condition:"used", image: "/images/IMG_2672.png" },
+    { id: 3, name: "Helicopter" , price: 11, condition:"used", image: "/images/IMG_2670.png" },
+    { id: 4, name: "Forklift" , price: 3, condition:"used", image: "/images/IMG_2671.png" },
+    { id: 5, name: "Board Game" , price: 12, condition:"new", image: "/images/IMG_2673.png" },
+    { id: 6, name: "Masterpeace" , price: 254, condition:"new", image: "/images/IMG_2681.png" },
+    { id: 7, name: "colored pencils" , price: 3, condition:"new", image: "/images/IMG_2669-removebg-preview.png" },
+    { id: 8, name: "Lego Fireboat" , price: 11, condition:"used", image: "/images/IMG_2675.png" },
 ];
 
 // GET all products

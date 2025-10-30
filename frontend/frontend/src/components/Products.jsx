@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { Link } from 'react-router-dom';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -27,21 +27,25 @@ const Products = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map((p) => (
-                <div
-                  key={p.id}
-                  className="border rounded-lg p-4 shadow hover:shadow-lg transition"
-                >
-                  <h3 className="text-lg font-semibold mb-2">{p.name}</h3>
-                  <p className="text-gray-700 mb-1"> {p.price} €</p>
-                  <p
-                    className={`font-medium ${
-                      p.condition === "new" ? "text-green-600" : "text-gray-500"
-                    }`}
-                  >
-                    {p.condition}
-                  </p>
-                </div>
-              ))}
+  <Link key={p.id} to={`/products/${p.id}`}>
+    <div className="border rounded-lg p-4 shadow hover:shadow-lg transition cursor-pointer">
+      <img
+        src={p.image || 'https://via.placeholder.com/150'}
+        alt={p.name}
+        className="w-full h-54 object-cover mb-3 rounded"
+      />  
+      <h3 className="text-lg font-semibold mb-2">{p.name}</h3>
+      <p className="text-gray-700 mb-1">{p.price} €</p>
+      <p
+        className={`font-medium ${
+          p.condition === "new" ? "text-green-600" : "text-gray-500"
+        }`}
+      >
+        {p.condition}
+      </p>
+    </div>
+  </Link>
+))}
             </div>
           )}
         </div>

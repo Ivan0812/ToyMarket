@@ -1,0 +1,37 @@
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+const ProductDetail = () => {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const res = await fetch(`http://localhost:3000/api/products/${id}`);
+      const data = await res.json();
+      setProduct(data);
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  if (!product) return <p className="text-center mt-10">Loading...</p>;
+
+  return (
+    <div className="max-w-3xl mx-auto p-6">
+      <img
+        src={product.image}
+        alt={product.name}
+        className="w-full h-80 object-cover rounded-lg shadow mb-6"
+      />
+      <h1 className="text-3xl font-bold mb-3">{product.name}</h1>
+      <p className="text-gray-700 text-lg mb-2">{product.price} €</p>
+      <p className="text-gray-600 mb-4">{product.condition}</p>
+      <p className="text-gray-500">
+        {product.description || "No description available."}
+      </p>
+    </div>
+  );
+};
+
+export default ProductDetail;
