@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+
+
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
-
+  const { addToCart } = useCart();
+  
   useEffect(() => {
     const fetchProduct = async () => {
       const res = await fetch(`http://localhost:3000/api/products/${id}`);
@@ -19,6 +24,10 @@ const ProductDetail = () => {
 
   return (
     <div className="max-w-3xl mx-auto p-6">
+        <button onClick={() => navigate(-1)}
+        className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-4 rounded mb-4">
+        &larr; Back
+        </button>
       <img
         src={product.image}
         alt={product.name}
@@ -30,6 +39,13 @@ const ProductDetail = () => {
       <p className="text-gray-500">
         {product.description || "No description available."}
       </p>
+
+        <button
+        onClick={() => addToCart(product)}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        > Add to Cart
+        </button>
+
     </div>
   );
 };
