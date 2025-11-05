@@ -7,6 +7,8 @@ import About from "./pages/About";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import { CartProvider } from "./context/CartContext";
+import Checkout from "./pages/Checkout.jsx";
+
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
         <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="/about" element={<About />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
         </Routes>
     </main>
     <Footer />

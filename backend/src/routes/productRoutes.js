@@ -13,6 +13,7 @@ let products = [
     { id: 8, name: "Lego Fireboat" , price: 11, condition:"used", quantity: 1, image: "/images/IMG_2675.png", description:"necessary evil"  },
 ];
 
+
 // GET all products
 router.get("/", (req, res)=> {
     res.json(products);
