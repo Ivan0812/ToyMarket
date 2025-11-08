@@ -1,29 +1,44 @@
-import express from 'express';
+import express from "express";
+import Order from "../models/Order.js";
+
 const router = express.Router();
 
-// 
-let orders = [];
+// 🔹 POST create a new order
+router.post("/", async (req, res) => {
+  const { cartItems, totalPrice, user } = req.body;
 
-// POST create a new order
-router.post("/", (req, res) => {
-    const {cartItems, totalPrice, user} = req.body;
+  if (!cartItems || cartItems.length === 0) {
+    return res.status(400).json({ message: "Cart is empty" });
+  }
 
-    if (!cartItems || cartItems.length === 0) {
-        return res.status(400).json({ message: "Cart is empty" });
-    }
-    const newOrder = {
-        id: orders.length + 1,
-        cartItems,
-        totalPrice,
-        user: user || "Guest",
-        createdAt: new Date()
-    };
+  try {
+    const newOrder = new Order({
+      cartItems,
+      totalPrice,
+      user: user || "Guest",
+    });
 
-    orders.push(newOrder);
+    const savedOrder = await newOrder.save();
+    console.log("✅ New order received:", savedOrder);
 
-    console.log("New order recived:", newOrder);
+    res.status(201).json({
+      message: "Order placed successfully",
+      order: savedOrder,
+    });
+  } catch (error) {
+    console.error("❌ Error saving order:", error);
+    res.status(500).json({ message: "Error placing order" });
+  }
+});
 
-    res.status(201).json({ message:"Order placed successfully", order: newOrder });
-});  
+// 🔹 GET all orders (opcionalno)
+router.get("/", async (req, res) => {
+  try {
+    const orders = await Order.find();
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching orders" });
+  }
+});
 
 export default router;

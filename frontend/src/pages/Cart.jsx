@@ -1,14 +1,20 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const { cart, addToCart, removeFromCart, clearCart } = useCart();
+  const navigate = useNavigate();
 
   if (cart.length === 0) {
     return <p className="text-center text-gray-500 mt-10">Your cart is empty.</p>;
   }
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const handleCheckout = () => {
+    navigate("/checkout");
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -72,7 +78,11 @@ const Cart = () => {
         >
           Clear Cart
         </button>
-        <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+
+       
+        <button
+        onClick={handleCheckout}
+        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
           Checkout
         </button>
       </div>
