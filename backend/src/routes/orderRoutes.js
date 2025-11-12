@@ -41,4 +41,44 @@ router.get("/", async (req, res) => {
   }
 });
 
+// 🔹 UPDATE order status
+router.put("/:id/status", async (req, res) => {
+    const { status } = req.body;
+  
+    try {
+      const updatedOrder = await Order.findByIdAndUpdate(
+        req.params.id,
+        { status },
+        { new: true }
+      );
+  
+      if (!updatedOrder) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+  
+      res.json({
+        message: "Order status updated",
+        order: updatedOrder,
+      });
+    } catch (error) {
+      console.error("❌ Error updating status:", error);
+      res.status(500).json({ message: "Error updating order status" });
+    }
+  });
+
+  // 🔹 DELETE order
+router.delete("/:id", async (req, res) => {
+    try {
+      const deletedOrder = await Order.findByIdAndDelete(req.params.id);
+      if (!deletedOrder) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+  
+      res.json({ message: "Order deleted successfully" });
+    } catch (error) {
+      console.error("❌ Error deleting order:", error);
+      res.status(500).json({ message: "Error deleting order" });
+    }
+  });
+
 export default router;

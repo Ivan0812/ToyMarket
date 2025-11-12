@@ -11,7 +11,13 @@ const orderSchema = new mongoose.Schema(
       },
     ],
     totalPrice: { type: Number, required: true },
-    user: { type: String, default: "Guest" },
+    user: { 
+         name: { type: String, required: true },
+         email: { type: String, required: true },
+         address: { type: String, required: true },
+         payment: { type: String, default: "cash" },
+     },
+    status: { type: String, default: "pending" },
   },
   { timestamps: true }
 );
