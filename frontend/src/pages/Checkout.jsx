@@ -11,7 +11,10 @@ const Checkout = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    address: "",
+    street: "",
+    number: "",
+    city: "",
+    postalCode: "",
     payment: "cash",
   });
 
@@ -22,7 +25,9 @@ const Checkout = () => {
   };
 
   const handlePlaceOrder = async () => {
-    if (!formData.name || !formData.email || !formData.address) {
+    const { name, email, street, number, city, postalCode } = formData;
+
+    if (!name || !email || !street || !number || !city || !postalCode) {
       setMessage("Please fill in all fields.");
       return;
     }
@@ -42,10 +47,9 @@ const Checkout = () => {
       const data = await res.json();
       setMessage(data.message);
 
-      // kratko pričekaj i preusmjeri korisnika
       setTimeout(() => {
         clearCart();
-        navigate("/"); // povratak na početnu
+        navigate("/");
       }, 2000);
     } catch (error) {
       console.error(error);
@@ -55,14 +59,15 @@ const Checkout = () => {
     }
   };
 
-  if (cart.length === 0) return <p className="text-center mt-10">Your cart is empty.</p>;
+  if (cart.length === 0)
+    return <p className="text-center mt-10">Your cart is empty.</p>;
 
   return (
     <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Checkout</h1>
 
       {/* 🧾 Lista artikala */}
-      {cart.map(item => (
+      {cart.map((item) => (
         <div key={item.id} className="flex justify-between mb-2 border-b pb-2">
           <p>{item.name} x {item.quantity}</p>
           <p>{item.price * item.quantity} €</p>
@@ -89,10 +94,31 @@ const Checkout = () => {
           className="w-full border rounded p-2"
         />
         <input
-          name="address"
-          value={formData.address}
+          name="street"
+          value={formData.street}
           onChange={handleChange}
-          placeholder="Delivery address"
+          placeholder="Street"
+          className="w-full border rounded p-2"
+        />
+        <input
+          name="number"
+          value={formData.number}
+          onChange={handleChange}
+          placeholder="House Number"
+          className="w-full border rounded p-2"
+        />
+        <input
+          name="city"
+          value={formData.city}
+          onChange={handleChange}
+          placeholder="City"
+          className="w-full border rounded p-2"
+        />
+        <input
+          name="postalCode"
+          value={formData.postalCode}
+          onChange={handleChange}
+          placeholder="Postal Code"
           className="w-full border rounded p-2"
         />
 
@@ -124,7 +150,7 @@ const Checkout = () => {
       <button
         onClick={handlePlaceOrder}
         disabled={loading}
-        className="mt-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        className="mt-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition active:scale-95"
       >
         {loading ? "Placing order..." : "Place Order"}
       </button>

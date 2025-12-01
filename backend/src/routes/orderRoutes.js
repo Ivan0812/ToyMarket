@@ -1,9 +1,10 @@
 import express from "express";
 import Order from "../models/Order.js";
+import Toy from "../models/Toy.js";
 
 const router = express.Router();
 
-// 🔹 POST create a new order
+// POST - kreiranje nove narudžbe i update quantity
 router.post("/", async (req, res) => {
   const { cartItems, totalPrice, user } = req.body;
 
@@ -12,73 +13,72 @@ router.post("/", async (req, res) => {
   }
 
   try {
+    // 1️⃣ Sprema narudžbu u bazu
     const newOrder = new Order({
       cartItems,
       totalPrice,
-      user: user || "Guest",
+      user,
     });
 
     const savedOrder = await newOrder.save();
-    console.log("✅ New order received:", savedOrder);
+
+    // 2️⃣ Prolazi kroz cartItems i smanjuje quantity u Toy modelu
+    for (const item of cartItems) {
+      const toy = await Toy.findById(item.id);
+      if (toy) {
+        toy.quantity -= item.quantity;
+
+        // Ako quantity padne na 0 ili niže, postavi inStock na false
+        if (toy.quantity <= 0) {
+          toy.quantity = 0;
+          toy.inStock = false;
+        }
+
+        await toy.save();
+      }
+    }
 
     res.status(201).json({
       message: "Order placed successfully",
       order: savedOrder,
     });
   } catch (error) {
-    console.error("❌ Error saving order:", error);
+    console.error("❌ Error placing order:", error);
     res.status(500).json({ message: "Error placing order" });
   }
 });
 
-// 🔹 GET all orders (opcionalno)
-router.get("/", async (req, res) => {
+// PUT - update status narudžbe (ostaje isto)
+router.put("/:id/status", async (req, res) => {
+  const { status } = req.body;
+
   try {
-    const orders = await Order.find();
-    res.json(orders);
+    const updatedOrder = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    if (!updatedOrder) return res.status(404).json({ message: "Order not found" });
+
+    res.json({ message: "Order status updated", order: updatedOrder });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching orders" });
+    console.error("❌ Error updating status:", error);
+    res.status(500).json({ message: "Error updating order status" });
   }
 });
 
-// 🔹 UPDATE order status
-router.put("/:id/status", async (req, res) => {
-    const { status } = req.body;
-  
-    try {
-      const updatedOrder = await Order.findByIdAndUpdate(
-        req.params.id,
-        { status },
-        { new: true }
-      );
-  
-      if (!updatedOrder) {
-        return res.status(404).json({ message: "Order not found" });
-      }
-  
-      res.json({
-        message: "Order status updated",
-        order: updatedOrder,
-      });
-    } catch (error) {
-      console.error("❌ Error updating status:", error);
-      res.status(500).json({ message: "Error updating order status" });
-    }
-  });
-
-  // 🔹 DELETE order
+// DELETE - briše narudžbu (ostaje isto)
 router.delete("/:id", async (req, res) => {
-    try {
-      const deletedOrder = await Order.findByIdAndDelete(req.params.id);
-      if (!deletedOrder) {
-        return res.status(404).json({ message: "Order not found" });
-      }
-  
-      res.json({ message: "Order deleted successfully" });
-    } catch (error) {
-      console.error("❌ Error deleting order:", error);
-      res.status(500).json({ message: "Error deleting order" });
-    }
-  });
+  try {
+    const deletedOrder = await Order.findByIdAndDelete(req.params.id);
+    if (!deletedOrder) return res.status(404).json({ message: "Order not found" });
+
+    res.json({ message: "Order deleted successfully" });
+  } catch (error) {
+    console.error("❌ Error deleting order:", error);
+    res.status(500).json({ message: "Error deleting order" });
+  }
+});
 
 export default router;

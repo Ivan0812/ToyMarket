@@ -4,51 +4,107 @@ import { useCart } from "../context/CartContext";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [loadingProduct, setLoadingProduct] = useState(null);
   const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/toys");
-        if (!response.ok) throw new Error("Failed to fetch products");
-        const data = await response.json();
+        const res = await fetch("http://localhost:3000/api/toys");
+        if (!res.ok) throw new Error("Failed to fetch products");
+
+        const data = await res.json();
         setProducts(data);
-        console.log("Products fetched:", data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
+      } catch (err) {
+        console.error("Error fetching products:", err);
       }
     };
 
     fetchProducts();
   }, []);
 
+  const handleAddToCart = (p) => {
+    setLoadingProduct(p._id);
+
+    addToCart({
+      id: p._id,
+      name: p.name,
+      price: p.price,
+      image: p.image,
+      quantity: 1,       // stavlja 1 u košaricu
+      stock: p.quantity, // stvarni stock iz DB
+      category: p.category,
+    });
+
+    setLoadingProduct(null);
+  };
+
   if (!products.length) {
-    return <p className="text-center mt-10 text-gray-500">No products available.</p>;
+    return (
+      <p className="text-center mt-10 text-gray-500">
+        No products available.
+      </p>
+    );
   }
 
   return (
     <div className="max-w-6xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-6 text-center">Products</h2>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((p) => (
-          <div key={p._id} className="border rounded-lg p-4 shadow hover:shadow-lg transition">
+          <div
+            key={p._id}
+            className={`border p-4 rounded shadow relative ${
+              p.quantity === 0 ? "opacity-50" : ""
+            }`}
+          >
+            {/* Badge */}
+            {p.quantity === 0 && (
+              <span className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded">
+                Out of Stock
+              </span>
+            )}
+
             <Link to={`/products/${p._id}`}>
               <img
-                src={p.image || "https://via.placeholder.com/150"}
+                src={p.image}
                 alt={p.name}
-                className="w-full h-56 object-cover mb-3 rounded"
+                className="w-full h-40 object-cover rounded"
               />
             </Link>
-            <h3 className="text-lg font-semibold mb-2">{p.name}</h3>
-            <p className="text-gray-700 mb-1">{p.price} €</p>
-            <p className={`font-medium ${p.category === "new" ? "text-green-600" : "text-gray-500"}`}>
-              {p.category}
-            </p>
-            <button
-              onClick={() => addToCart({ ...p, id: p._id })}
-              className="mt-2 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition"
+
+            {/* Precrtavanje naziva/cijene */}
+            <h2
+              className={`text-lg font-bold mt-2 ${
+                p.quantity === 0 ? "line-through text-gray-500" : ""
+              }`}
             >
-              Add to Cart
+              {p.name}
+            </h2>
+
+            <p
+              className={`${
+                p.quantity === 0 ? "line-through text-gray-500" : ""
+              }`}
+            >
+              {p.price} €
+            </p>
+
+            <button
+              disabled={p.quantity === 0 || loadingProduct === p._id}
+              onClick={() => handleAddToCart(p)}
+              className={`mt-3 px-4 py-2 rounded text-white transition ${
+                p.quantity === 0
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
+            >
+              {p.quantity === 0
+                ? "Sold Out"
+                : loadingProduct === p._id
+                ? "Adding..."
+                : "Add to Cart"}
             </button>
           </div>
         ))}

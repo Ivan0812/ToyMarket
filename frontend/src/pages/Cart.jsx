@@ -3,7 +3,7 @@ import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { cart, addToCart, removeFromCart, clearCart } = useCart();
+  const { cart, removeFromCart, clearCart, updateQuantity } = useCart();
   const navigate = useNavigate();
 
   if (cart.length === 0) {
@@ -12,9 +12,7 @@ const Cart = () => {
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const handleCheckout = () => {
-    navigate("/checkout");
-  };
+  const handleCheckout = () => navigate("/checkout");
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -25,16 +23,13 @@ const Cart = () => {
           <li key={item.id} className="flex justify-between items-center border-b py-2">
             <div>
               <p className="font-semibold">{item.name}</p>
+
               <div className="flex items-center gap-2 mt-1">
-                {/* Button za smanjivanje količine */}
+                {/* DECREASE */}
                 <button
-                  onClick={() => {
-                    if (item.quantity > 1) {
-                      addToCart({ ...item, quantity: -1 }); // smanji količinu
-                    } else {
-                      removeFromCart(item.id); // ako je 1, ukloni iz košarice
-                    }
-                  }}
+                  onClick={() =>
+                    updateQuantity(item.id, Math.max(1, item.quantity - 1), item.stock)
+                  }
                   className="px-2 bg-gray-200 rounded hover:bg-gray-300"
                 >
                   -
@@ -42,14 +37,11 @@ const Cart = () => {
 
                 <span>{item.quantity}</span>
 
-                {/* Button za povećanje količine */}
+                {/* INCREASE */}
                 <button
-                  onClick={() => {
-                    // ograniči na maksimalnu količinu iz backenda
-                    if (!item.availableQuantity || item.quantity < item.availableQuantity) {
-                      addToCart(item); // ovo će povećati količinu
-                    }
-                  }}
+                  onClick={() =>
+                    updateQuantity(item.id, item.quantity + 1, item.stock)
+                  }
                   className="px-2 bg-gray-200 rounded hover:bg-gray-300"
                 >
                   +
@@ -74,15 +66,15 @@ const Cart = () => {
       <div className="flex justify-end gap-2 mt-4">
         <button
           onClick={clearCart}
-          className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded"
+          className="bg-gray-200 hover:bg-gray-300 px-4 py-2 transition active:scale-95 rounded"
         >
           Clear Cart
         </button>
 
-       
         <button
-        onClick={handleCheckout}
-        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+          onClick={handleCheckout}
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 transition active:scale-95 rounded"
+        >
           Checkout
         </button>
       </div>
