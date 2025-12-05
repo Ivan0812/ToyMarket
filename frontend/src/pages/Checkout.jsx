@@ -38,10 +38,15 @@ const Checkout = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          cartItems: cart,
-          totalPrice,
-          user: formData,
-        }),
+            cartItems: cart,
+            totalPrice,
+            user: {
+              name: formData.name,
+              email: formData.email,
+              address: `${formData.street} ${formData.number}, ${formData.city}, ${formData.postalCode}`,
+              payment: formData.payment,
+            },
+          })
       });
 
       const data = await res.json();

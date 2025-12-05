@@ -6,6 +6,7 @@ const router = express.Router();
 
 // POST - kreiranje nove narudžbe i update quantity
 router.post("/", async (req, res) => {
+  console.log("📩 Received order:", req.body); 
   const { cartItems, totalPrice, user } = req.body;
 
   if (!cartItems || cartItems.length === 0) {
@@ -24,7 +25,7 @@ router.post("/", async (req, res) => {
 
     // 2️⃣ Prolazi kroz cartItems i smanjuje quantity u Toy modelu
     for (const item of cartItems) {
-      const toy = await Toy.findById(item.id);
+      const toy = await Toy.findById(item._id || item.id);
       if (toy) {
         toy.quantity -= item.quantity;
 

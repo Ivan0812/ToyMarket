@@ -34,14 +34,15 @@ const ProductDetail = () => {
             SOLD OUT
           </span>
         )}
-
-        <img
-          src={product.image}
-          alt={product.name}
-          className={`w-full h-80 object-cover rounded mb-4 ${
-            isOut ? "opacity-60" : ""
-          }`}
-        />
+        <div className="w-full h-64 bg-white rounded flex items-center justify-center border">
+          <img
+           src={product.image}
+           alt={product.name}
+           className={`max-h-full max-w-full object-contain ${
+              isOut ? "opacity-60" : ""
+           }`}
+           />
+        </div>
       </div>
 
       <h1
