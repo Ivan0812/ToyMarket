@@ -11,7 +11,7 @@ const defaultProducts = [
   { name: "Board Game", price: 12, quantity: 2, category: "new", image: "/images/IMG_2673.png", description: "Brand New." },
   { name: "Masterpeace", price: 254, quantity: 1, category: "new", image: "/images/IMG_2681.png", description: "Selfmade masterpeace" },
   { name: "Colored pencils", price: 3, quantity: 5, category: "new", image: "/images/IMG_2669-removebg-preview.png", description: "too much on stock" },
-  { name: "Lego Fireboat", price: 11, quantity: 1, category: "used", image: "/images/IMG_2675.png", description: "necessary evil" },
+  { name: "Lego Fireboat", price: 11, quantity: 1, category: "used", images: ["/images/IMG_2675.png", "IMG_2676.png", "IMG_2677.png"], description: "necessary evil" },
 ];
 
 // GET ALL TOYS
