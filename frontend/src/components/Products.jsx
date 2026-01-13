@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
-const Products = () => {
+  const Products = () => {
   const [products, setProducts] = useState([]);
   const [loadingProduct, setLoadingProduct] = useState(null);
   const { addToCart } = useCart();
+  const [addedProduct, setAddedProduct] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -27,7 +28,7 @@ const Products = () => {
     setLoadingProduct(p._id);
 
     addToCart({
-      id: p._id,
+      _id: p._id,
       name: p.name,
       price: p.price,
       image: p.image,
@@ -36,7 +37,11 @@ const Products = () => {
       category: p.category,
     });
 
-    setLoadingProduct(null);
+    setAddedProduct(p._id);
+    setTimeout(() => {
+      setLoadingProduct(null);
+      setAddedProduct(null);
+    }, 1000);
   };
 
   if (!products.length) {
@@ -92,19 +97,27 @@ const Products = () => {
             </p>
 
             <button
-              disabled={p.quantity === 0 || loadingProduct === p._id}
+             disabled={
+               p.quantity === 0 ||
+               loadingProduct === p._id ||
+                addedProduct === p._id
+               }
               onClick={() => handleAddToCart(p)}
-              className={`mt-3 px-4 py-2 rounded text-white transition ${
+               className={`mt-3 px-4 py-2 rounded text-white transition-all duration-300 ${
                 p.quantity === 0
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
-              }`}
+                 ? "bg-gray-400 cursor-not-allowed"
+                 : addedProduct === p._id
+                ? "bg-green-600 scale-105"
+                : "bg-blue-600 hover:bg-blue-700"
+             }`}
             >
-              {p.quantity === 0
-                ? "Sold Out"
-                : loadingProduct === p._id
-                ? "Adding..."
-                : "Add to Cart"}
+             {p.quantity === 0
+             ? "Sold Out"
+             : addedProduct === p._id
+             ? "Added ✓"
+             : loadingProduct === p._id
+             ? "Adding..."
+              : "Add to Cart"}
             </button>
           </div>
         ))}

@@ -7,6 +7,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
+  const [added, setAdded] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -82,23 +83,35 @@ const ProductDetail = () => {
       </div>
 
       <button
-        disabled={isOut}
-        onClick={() =>
-          addToCart({
-            ...product,
-            id: product._id,
-            quantity,
-            stock: product.quantity,
-          })
-        }
-        className={`px-4 py-2 rounded text-white transition ${
-          isOut
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-600 hover:bg-blue-700"
-        }`}
-      >
-        {isOut ? "Out of Stock" : `Add ${quantity} to Cart`}
-      </button>
+  disabled={isOut || added}
+  onClick={() => {
+    addToCart({
+      ...product,
+      _id: product._id,
+      quantity,
+      stock: product.quantity,
+    });
+
+    setAdded(true);
+
+    setTimeout(() => {
+      setAdded(false);
+    }, 1200);
+  }}
+  className={`px-4 py-2 rounded text-white transition-all duration-300 ${
+    isOut
+      ? "bg-gray-400 cursor-not-allowed"
+      : added
+      ? "bg-green-600 scale-105"
+      : "bg-blue-600 hover:bg-blue-700"
+  }`}
+>
+  {isOut
+    ? "Out of Stock"
+    : added
+    ? "Added ✓"
+    : `Add ${quantity} to Cart`}
+</button>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import express from "express";
 import Order from "../models/Order.js";
 import Toy from "../models/Toy.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -23,20 +24,28 @@ router.post("/", async (req, res) => {
 
     const savedOrder = await newOrder.save();
 
-    // 2️⃣ Prolazi kroz cartItems i smanjuje quantity u Toy modelu
     for (const item of cartItems) {
-      const toy = await Toy.findById(item._id || item.id);
-      if (toy) {
-        toy.quantity -= item.quantity;
-
-        // Ako quantity padne na 0 ili niže, postavi inStock na false
-        if (toy.quantity <= 0) {
-          toy.quantity = 0;
-          toy.inStock = false;
-        }
-
-        await toy.save();
+      const toy = await Toy.findById(item._id);
+    
+      if (!toy) {
+        return res.status(404).json({
+          message: `Toy not found: ${item._id}`,
+        });
       }
+    
+      if (toy.quantity < item.quantity) {
+        return res.status(400).json({
+          message: `Not enough stock for ${toy.name}`,
+        });
+      }
+    
+      toy.quantity -= item.quantity;
+    
+      if (toy.quantity === 0) {
+        toy.inStock = false;
+      }
+    
+      await toy.save();
     }
 
     res.status(201).json({
@@ -46,6 +55,17 @@ router.post("/", async (req, res) => {
   } catch (error) {
     console.error("❌ Error placing order:", error);
     res.status(500).json({ message: "Error placing order" });
+  }
+});
+
+// GET - dohvat svih narudžbi (ADMIN)
+router.get("/", async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (error) {
+    console.error("❌ Error fetching orders:", error);
+    res.status(500).json({ message: "Error fetching orders" });
   }
 });
 

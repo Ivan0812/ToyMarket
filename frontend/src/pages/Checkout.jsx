@@ -38,24 +38,38 @@ const Checkout = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            cartItems: cart,
-            totalPrice,
-            user: {
-              name: formData.name,
-              email: formData.email,
-              address: `${formData.street} ${formData.number}, ${formData.city}, ${formData.postalCode}`,
-              payment: formData.payment,
-            },
-          })
+          cartItems: cart.map(item => ({
+            _id: item._id,          // ⬅ bitno za stock update
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.image,
+          })),
+          totalPrice,
+          user: {
+            name: formData.name,
+            email: formData.email,
+            street: formData.street,
+            number: formData.number,
+            city: formData.city,
+            postalCode: formData.postalCode,
+            payment: formData.payment,
+          },
+        })
       });
 
-      const data = await res.json();
-      setMessage(data.message);
+         const data = await res.json();
+            if (!res.ok) {
+            setMessage(data.message || JSON.stringify(data));
+              } else {
+              setMessage(data.message);
 
-      setTimeout(() => {
-        clearCart();
-        navigate("/");
-      }, 2000);
+        // Ako je uspješno, čisti košaricu i navigiraj
+          setTimeout(() => {
+          clearCart();
+          navigate("/");
+        }, 2000);
+    }
     } catch (error) {
       console.error(error);
       setMessage("Error placing order");
@@ -73,7 +87,7 @@ const Checkout = () => {
 
       {/* 🧾 Lista artikala */}
       {cart.map((item) => (
-        <div key={item.id} className="flex justify-between mb-2 border-b pb-2">
+        <div key={item._id} className="flex justify-between mb-2 border-b pb-2">
           <p>{item.name} x {item.quantity}</p>
           <p>{item.price * item.quantity} €</p>
         </div>

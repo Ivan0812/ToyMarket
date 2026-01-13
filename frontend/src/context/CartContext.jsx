@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+  const [cartAnimation, setCartAnimation] = useState(false);
   const [cart, setCart] = useState(() => {
     const saved = localStorage.getItem("cart");
     return saved ? JSON.parse(saved) : [];
@@ -13,31 +14,32 @@ export const CartProvider = ({ children }) => {
   }, [cart]);
 
   const addToCart = (product) => {
+    setCartAnimation(true);
+    setTimeout(() => setCartAnimation(false), 400);
+  
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
-
-      // Ako je već u košarici → provjeri stock
+  
       if (existing) {
         const desired = existing.quantity + product.quantity;
-
+  
         if (desired > product.stock) {
           alert(`We only have ${product.stock} in stock.`);
           return prev;
         }
-
+  
         return prev.map((item) =>
           item.id === product.id
             ? { ...item, quantity: desired }
             : item
         );
       }
-
-      // Ako se dodaje prvi put → provjera stock-a
+  
       if (product.quantity > product.stock) {
         alert(`We only have ${product.stock} in stock.`);
         return prev;
       }
-
+  
       return [...prev, product];
     });
   };
@@ -76,6 +78,7 @@ export const CartProvider = ({ children }) => {
         clearCart,
         totalItems,
         totalPrice,
+        cartAnimation
       }}
     >
       {children}
