@@ -1,4 +1,11 @@
 import { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
 import ProductCard from "../components/ProductCard";
 import { Link } from "react-router-dom";
 
@@ -8,24 +15,37 @@ const Home = () => {
   useEffect(() => {
     fetch("http://localhost:3000/api/toys")
       .then(res => res.json())
-      .then(data => setProducts(data.slice(0, 4))); // featured
+      .then(data => setProducts(data.slice(0, 6)));
   }, []);
 
+  if (!products.length) {
+    return <p className="text-center mt-10">Loading...</p>;
+  }
+
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">
-        Welcome to Toy Store 🧸
-      </h1>
+    <div className="max-w-8xl mx-auto p-8">
+      <h1 className="text-3xl font-bold mb-6">Welcome to Toy Store 🧸</h1>
 
-      <h2 className="text-xl font-semibold mb-4">
-        Featured Products
-      </h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <Swiper
+        modules={[Autoplay, Pagination, Navigation]}
+        spaceBetween={20}
+        slidesPerView={2}
+        loop={true}
+        autoplay={{ delay: 3000 }}
+        pagination={{ clickable: true }}
+        navigation
+        breakpoints={{
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        }}
+        
+      >
         {products.map(product => (
-          <ProductCard key={product._id} product={product} />
+          <SwiperSlide key={product._id}>
+            <ProductCard product={product} />
+          </SwiperSlide>
         ))}
-      </div>
+      </Swiper>
 
       <div className="mt-6 text-center">
         <Link

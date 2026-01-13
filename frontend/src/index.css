@@ -2,3 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* index.css */
+
+/* Osnovni reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  html, body, #root {
+    height: 100%;
+  }
+  
+  #root > div {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+  
+  main {
+    flex: 1; /* raste koliko može da gura footer na dno */
+  }
+

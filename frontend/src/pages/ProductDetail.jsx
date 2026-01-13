@@ -35,7 +35,7 @@ const ProductDetail = () => {
             SOLD OUT
           </span>
         )}
-        <div className="w-full h-64 bg-white rounded flex items-center justify-center border">
+        <div className="w-full h-78 bg-white rounded flex items-center justify-center border">
           <img
            src={product.image}
            alt={product.name}

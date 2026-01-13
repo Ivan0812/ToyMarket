@@ -1,3 +1,4 @@
+// src/components/ProductCard.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
@@ -13,7 +14,7 @@ const ProductCard = ({ product }) => {
     setLoading(true);
 
     addToCart({
-      id: product._id,          // ✅ BITNO
+      id: product._id,        // ✅ BITNO
       name: product.name,
       price: product.price,
       image: product.image,
@@ -32,7 +33,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <div
-      className={`border p-4 rounded shadow relative ${
+      className={`border p-6 rounded shadow relative transition-transform duration-300 hover:scale-105 ${
         isOut ? "opacity-50" : ""
       }`}
     >
@@ -46,21 +47,15 @@ const ProductCard = ({ product }) => {
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-40 object-cover rounded"
+          className="w-full h-60 object-contain  rounded"
         />
       </Link>
 
-      <h2
-        className={`text-lg font-bold mt-2 ${
-          isOut ? "line-through text-gray-500" : ""
-        }`}
-      >
+      <h2 className={`text-lg font-bold mt-2 ${isOut ? "line-through text-gray-500" : ""}`}>
         {product.name}
       </h2>
 
-      <p className={isOut ? "line-through text-gray-500" : ""}>
-        {product.price} €
-      </p>
+      <p className={isOut ? "line-through text-gray-500" : ""}>{product.price} €</p>
 
       <button
         disabled={isOut || loading || added}
