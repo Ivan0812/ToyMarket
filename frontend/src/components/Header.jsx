@@ -11,6 +11,7 @@ function Header() {
         {/* Lijevi dio - linkovi */}
         <div className="flex gap-4">
           <Link to="/">Home</Link>
+          <Link to="/products">Products</Link>
           <Link to="/about">About</Link>
         </div>
 
