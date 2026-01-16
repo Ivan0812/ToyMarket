@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
+  const [loading, setLoading] = useState(false);
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
@@ -15,103 +20,88 @@ const ProductDetail = () => {
         const res = await fetch(`http://localhost:3000/api/toys/${id}`);
         const data = await res.json();
         setProduct(data);
-      } catch (error) {
-        console.error(error);
+      } catch (err) {
+        console.error(err);
       }
     };
+
     fetchProduct();
   }, [id]);
 
   if (!product) return <p className="text-center mt-10">Loading...</p>;
 
-  const isOut = product.quantity === 0;
+  const handleAdd = () => {
+    setLoading(true);
+    addToCart({
+      id: product._id,
+      name: product.name,
+      price: product.price,
+      image: Array.isArray(product.images) ? product.images[0] : product.image,
+      quantity: 1,
+      stock: product.quantity,
+      category: product.category,
+    });
+    setAdded(true);
+    setTimeout(() => {
+      setLoading(false);
+      setAdded(false);
+    }, 1000);
+  };
+
+  // Ovo osigurava da Swiper uvijek ima array slika
+  const images = Array.isArray(product.images) && product.images.length > 0
+    ? product.images
+    : [product.image];
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+      <p className="text-xl font-semibold mb-4">{product.price} €</p>
+      <p className="mb-6">{product.description}</p>
 
-      <div className="relative">
-        {isOut && (
-          <span className="absolute top-3 left-3 bg-red-600 text-white px-3 py-1 rounded text-sm">
-            SOLD OUT
-          </span>
-        )}
-        <div className="w-full h-78 bg-white rounded flex items-center justify-center border">
-          <img
-           src={product.image}
-           alt={product.name}
-           className={`max-h-full max-w-full object-contain ${
-              isOut ? "opacity-60" : ""
-           }`}
-           />
-        </div>
-      </div>
-
-      <h1
-        className={`text-2xl font-bold mb-2 ${
-          isOut ? "line-through text-gray-500" : ""
-        }`}
-      >
-        {product.name}
-      </h1>
-
-      <p className="text-gray-700 mb-2">{product.description}</p>
-
-      <p
-        className={`text-lg font-semibold mb-4 ${
-          isOut ? "line-through text-gray-500" : ""
-        }`}
-      >
-        {product.price} €
-      </p>
-
-      {/* Quantity Selector */}
-      <div className="flex items-center gap-4 mb-6">
-        <label className="font-semibold">Quantity:</label>
-
-        <select
-          value={quantity}
-          disabled={isOut}
-          onChange={(e) => setQuantity(Number(e.target.value))}
-          className="border rounded p-1 disabled:bg-gray-200"
+      {/* Carousel za sve slike proizvoda */}
+      {images.length > 0 && (
+        <Swiper
+          modules={[Autoplay, Pagination, Navigation]}
+          spaceBetween={20}
+          slidesPerView={1}
+          loop
+          navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 3000 }}
+          className="mb-6"
         >
-          {Array.from({ length: product.quantity }, (_, i) => i + 1).map((n) => (
-            <option key={n} value={n}>
-              {n}
-            </option>
+          {images.map((img, index) => (
+            <SwiperSlide key={index}>
+              <img
+                src={img}
+                alt={`${product.name} ${index + 1}`}
+                className="w-full h-96 object-contain rounded border"
+              />
+            </SwiperSlide>
           ))}
-        </select>
-      </div>
+        </Swiper>
+      )}
 
       <button
-  disabled={isOut || added}
-  onClick={() => {
-    addToCart({
-      ...product,
-      _id: product._id,
-      quantity,
-      stock: product.quantity,
-    });
-
-    setAdded(true);
-
-    setTimeout(() => {
-      setAdded(false);
-    }, 1200);
-  }}
-  className={`px-4 py-2 rounded text-white transition-all duration-300 ${
-    isOut
-      ? "bg-gray-400 cursor-not-allowed"
-      : added
-      ? "bg-green-600 scale-105"
-      : "bg-blue-600 hover:bg-blue-700"
-  }`}
->
-  {isOut
-    ? "Out of Stock"
-    : added
-    ? "Added ✓"
-    : `Add ${quantity} to Cart`}
-</button>
+        onClick={handleAdd}
+        disabled={product.quantity === 0 || loading || added}
+        className={`px-6 py-2 rounded text-white transition-all duration-300 ${
+          product.quantity === 0
+            ? "bg-gray-400 cursor-not-allowed"
+            : added
+            ? "bg-green-600"
+            : "bg-blue-600 hover:bg-blue-700"
+        }`}
+      >
+        {product.quantity === 0
+          ? "Sold Out"
+          : added
+          ? "Added ✓"
+          : loading
+          ? "Adding..."
+          : "Add to Cart"}
+      </button>
     </div>
   );
 };
