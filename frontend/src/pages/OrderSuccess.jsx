@@ -1,17 +1,16 @@
 // src/pages/OrderSuccess.jsx
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { useCart } from "../context/CartContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
+
 
 const OrderSuccess = () => {
-    const { cart } = useCart();
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        if (cart.length > 0) navigate("/");
-      }, [cart, navigate]);
-
+   const location = useLocation();
+   
+   if (!location.state?.success) {
+        return <Navigate to="/" />;
+    }
+    
   return (
     <div className="max-w-xl mx-auto text-center mt-20">
       <h1 className="text-3xl font-bold text-green-600 mb-4">

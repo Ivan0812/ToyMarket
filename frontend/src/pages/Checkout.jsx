@@ -64,7 +64,7 @@ const Checkout = () => {
           return;
       } 
           clearCart();
-          navigate("/order-success");
+          navigate("/order-success", { state: { success: true } });
        
     } catch (error) {
       console.error(error);
