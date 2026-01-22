@@ -14,10 +14,10 @@ const ProductCard = ({ product }) => {
     setLoading(true);
 
     addToCart({
-      id: product._id,        // ✅ BITNO
+      _id: product._id,        // ✅ BITNO
       name: product.name,
       price: product.price,
-      image: product.image,
+      image: product.images[0],
       quantity: 1,
       stock: product.quantity,
       category: product.category,
@@ -45,7 +45,7 @@ const ProductCard = ({ product }) => {
 
       <Link to={`/products/${product._id}`}>
         <img
-          src={product.image}
+          src={product.images?.[0]}
           alt={product.name}
           className="w-full h-60 object-contain  rounded"
         />

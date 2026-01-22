@@ -9,6 +9,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import { CartProvider } from "./context/CartContext";
 import Checkout from "./pages/Checkout.jsx";
+import OrderSuccess from "./pages/OrderSuccess.jsx";
 import AdminOrders from "./pages/AdminOrders.jsx";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/order-success" element={<OrderSuccess />} />
               <Route path="/admin" element={<AdminOrders />} />
             </Routes>
           </main>

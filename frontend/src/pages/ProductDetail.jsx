@@ -33,7 +33,7 @@ const ProductDetail = () => {
   const handleAdd = () => {
     setLoading(true);
     addToCart({
-      id: product._id,
+      _id: product._id,
       name: product.name,
       price: product.price,
       image: Array.isArray(product.images) ? product.images[0] : product.image,

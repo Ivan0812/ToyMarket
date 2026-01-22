@@ -4,14 +4,74 @@ import Toy from "../models/Toy.js";
 const router = express.Router();
 
 const defaultProducts = [
-  { name: "Lego Bager", price: 8, quantity: 1, category: "used", image: "/images/IMG_2668.png", description: "Our 4-year-old needed a little help from dad to build it — but no help at all to take it apart!" },
-  { name: "Cat", price: 5, quantity: 1, category: "used", image: "/images/IMG_2672.png", description: "Adorable, soft Cat" },
-  { name: "Helicopter", price: 11, quantity: 1, category: "used", image: "/images/IMG_2670.png", description: "Flew many missions across the living room!" },
-  { name: "Forklift", price: 3, quantity: 1, category: "used", image: "/images/IMG_2671.png", description: "Handeecaped" },
-  { name: "Board Game", price: 12, quantity: 2, category: "new", image: "/images/IMG_2673.png", description: "Brand New." },
-  { name: "Masterpeace", price: 254, quantity: 1, category: "new", image: "/images/IMG_2681.png", description: "Selfmade masterpeace" },
-  { name: "Colored pencils", price: 3, quantity: 5, category: "new", image: "/images/IMG_2669-removebg-preview.png", description: "too much on stock" },
-  { name: "Lego Fireboat", price: 11, quantity: 1, category: "used", image: ["/images/IMG_2675.png", "/images/IMG_2676.png", "/images/IMG_2677.png"], description: "necessary evil" },
+  {
+    name: "Lego Bager",
+    price: 8,
+    quantity: 1,
+    category: "used",
+    images: ["/images/IMG_2668.png"],
+    description: "Our 4-year-old needed a little help from dad to build it — but no help at all to take it apart!"
+  },
+  {
+    name: "Cat",
+    price: 5,
+    quantity: 1,
+    category: "used",
+    images: ["/images/IMG_2672.png"],
+    description: "Adorable, soft Cat"
+  },
+  {
+    name: "Helicopter",
+    price: 11,
+    quantity: 1,
+    category: "used",
+    images: ["/images/IMG_2670.png"],
+    description: "Flew many missions across the living room!"
+  },
+  {
+    name: "Forklift",
+    price: 3,
+    quantity: 1,
+    category: "used",
+    images: ["/images/IMG_2671.png"],
+    description: "Handeecaped"
+  },
+  {
+    name: "Board Game",
+    price: 12,
+    quantity: 2,
+    category: "new",
+    images: ["/images/IMG_2673.png"],
+    description: "Brand New."
+  },
+  {
+    name: "Masterpeace",
+    price: 254,
+    quantity: 1,
+    category: "new",
+    images: ["/images/IMG_2681.png"],
+    description: "Selfmade masterpeace"
+  },
+  {
+    name: "Colored pencils",
+    price: 3,
+    quantity: 5,
+    category: "new",
+    images: ["/images/IMG_2669-removebg-preview.png"],
+    description: "too much on stock"
+  },
+  {
+    name: "Lego Fireboat",
+    price: 11,
+    quantity: 1,
+    category: "used",
+    images: [
+      "/images/IMG_2675.png",
+      "/images/IMG_2676.png",
+      "/images/IMG_2677.png"
+    ],
+    description: "necessary evil"
+  }
 ];
 
 // GET ALL TOYS
