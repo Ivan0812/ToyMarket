@@ -16,6 +16,12 @@ app.use(express.json());
 app.use("/api/toys", toyRoutes);
 app.use("/api/orders", orderRoutes);
 
+// app.js ili server.js
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`, req.body);
+    next();
+  });
+
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
