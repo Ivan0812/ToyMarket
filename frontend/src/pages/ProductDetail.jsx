@@ -86,13 +86,14 @@ const ProductDetail = () => {
       <button
         onClick={handleAdd}
         disabled={product.quantity === 0 || loading || added}
-        className={`px-6 py-2 rounded text-white transition-all duration-300 ${
-          product.quantity === 0
-            ? "bg-gray-400 cursor-not-allowed"
-            : added
-            ? "bg-green-600"
-            : "bg-blue-600 hover:bg-blue-700"
-        }`}
+        className={`w-full py-3 rounded-xl text-white 
+          transition active:scale-95 ${
+product.quantity === 0
+  ? "bg-gray-400 cursor-not-allowed"
+  : added
+  ? "bg-green-600"
+  : "bg-blue-600 hover:bg-blue-700"
+}`}
       >
         {product.quantity === 0
           ? "Sold Out"

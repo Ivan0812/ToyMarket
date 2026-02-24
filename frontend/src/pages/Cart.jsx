@@ -20,66 +20,87 @@ const Cart = () => {
 
       <ul>
         {cart.map((item) => (
-          <li key={item.id} className="flex justify-between items-center border-b py-2">
-            <div>
-              <p className="font-semibold">{item.name}</p>
+          <li key={item.id} className="flex justify-between items-center 
+             bg-white shadow-sm rounded-xl 
+             p-4 mb-4 transition hover:shadow-md">
+            <div className="flex items-center gap-4">
+  <div>
+    <p className="font-semibold text-lg">{item.name}</p>
 
-              <div className="flex items-center gap-2 mt-1">
-                {/* DECREASE */}
-                <button
-                  onClick={() =>
-                    updateQuantity(item.id, Math.max(1, item.quantity - 1), item.stock)
-                  }
-                  className="px-2 bg-gray-200 rounded hover:bg-gray-300"
-                >
-                  -
-                </button>
+    <p className="text-gray-500 text-sm">
+      {item.price} € each
+    </p>
 
-                <span>{item.quantity}</span>
+    <div className="flex items-center gap-2 mt-2">
+      <button
+        onClick={() =>
+          updateQuantity(item.id, Math.max(1, item.quantity - 1), item.stock)
+        }
+        className="w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300"
+      >
+        -
+      </button>
 
-                {/* INCREASE */}
-                <button
-                  onClick={() =>
-                    updateQuantity(item.id, item.quantity + 1, item.stock)
-                  }
-                  className="px-2 bg-gray-200 rounded hover:bg-gray-300"
-                >
-                  +
-                </button>
-              </div>
+      <span className="font-medium">{item.quantity}</span>
 
-              <p>{item.price} €</p>
-            </div>
+      <button
+        onClick={() =>
+          updateQuantity(item.id, item.quantity + 1, item.stock)
+        }
+        className="w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300"
+      >
+        +
+      </button>
+    </div>
+  </div>
+</div>
 
-            <button
-              onClick={() => removeFromCart(item.id)}
-              className="text-red-600 hover:underline"
-            >
-              Remove
-            </button>
+<div className="text-right">
+  <p className="font-bold text-lg">
+    {(item.price * item.quantity).toFixed(2)} €
+  </p>
+
+  <button
+    onClick={() => removeFromCart(item.id)}
+    className="text-red-500 text-sm hover:underline mt-2"
+  >
+    Remove
+  </button>
+</div>
           </li>
+
         ))}
+
       </ul>
 
-      <p className="mt-4 text-lg font-bold text-right">Total: {total.toFixed(2)} €</p>
+      <div className="bg-white shadow-md rounded-xl p-6 mt-6">
+  <div className="flex justify-between text-lg font-semibold">
+    <span>Total</span>
+    <span>{total.toFixed(2)} €</span>
+  </div>
 
-      <div className="flex justify-end gap-2 mt-4">
-        <button
-          onClick={clearCart}
-          className="bg-gray-200 hover:bg-gray-300 px-4 py-2 transition active:scale-95 rounded"
-        >
-          Clear Cart
-        </button>
+  <div className="flex gap-4 mt-6">
+    <button
+      onClick={clearCart}
+      className="flex-1 bg-gray-200 hover:bg-gray-300 
+                 py-3 rounded-xl transition active:scale-95"
+    >
+      Clear Cart
+    </button>
 
-        <button
-          onClick={handleCheckout}
-          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 transition active:scale-95 rounded"
-        >
-          Checkout
-        </button>
-      </div>
-    </div>
+    <button
+      onClick={handleCheckout}
+      className="flex-1 bg-green-600 hover:bg-green-700 
+                 text-white py-3 rounded-xl 
+                 transition active:scale-95"
+    >
+      Checkout
+    </button>
+  </div>
+ </div>
+</div>
   );
+
 };
 
 export default Cart;

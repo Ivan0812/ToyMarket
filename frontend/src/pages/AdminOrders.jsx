@@ -85,89 +85,85 @@ const AdminOrders = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Admin – Orders</h1>
+    <div className="max-w-6xl mx-auto p-6">
+  <h1 className="text-2xl font-bold mb-6">Admin – Orders</h1>
 
-      {orders.map((order) => (
-        <div
-          key={order._id}
-          className="border p-4 rounded mb-4 shadow bg-white"
-        >
-          {/* Header */}
-          <div className="flex justify-between items-center mb-2">
-            <p className="font-semibold">Order ID: {order._id}</p>
+  <div className="overflow-x-auto">
 
-            <span
-              className={`px-3 py-1 rounded text-white text-sm ${
+  <div className="mb-4 flex justify-between">
+  <p>Total orders: {orders.length}</p>
+  <p>
+    Revenue: {orders.reduce((acc, o) => acc + o.totalPrice, 0)} €
+  </p>
+</div>
+
+    <table className="w-full border-collapse bg-white shadow rounded">
+      <thead>
+        <tr className="bg-gray-100 text-left">
+          <th className="p-3">Order ID</th>
+          <th className="p-3">Customer</th>
+          <th className="p-3">Total</th>
+          <th className="p-3">Status</th>
+          <th className="p-3">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {orders.map((order) => (
+          <tr key={order._id} className="border-t">
+            <td className="p-3">{order._id.slice(-6)}</td>
+            <td className="p-3">
+              {order.user.name}
+              <br />
+              <span className="text-sm text-gray-500">
+                {order.user.email}
+              </span>
+            </td>
+
+            <td className="p-3 font-semibold">
+              {order.totalPrice} €
+            </td>
+
+            <td className="p-3">
+              <span className={`px-2 py-1 rounded text-white text-sm ${
                 order.status === "Delivered"
                   ? "bg-blue-600"
                   : order.status === "Sent"
                   ? "bg-green-600"
                   : "bg-yellow-500"
-              }`}
-            >
-              {order.status}
-            </span>
-          </div>
+              }`}>
+                {order.status}
+              </span>
+            </td>
 
-          {/* Customer */}
-          <div className="mb-3">
-            <p className="font-semibold">Customer</p>
-            <p>{order.user.name}</p>
-            <p>{order.user.email}</p>
-            <p>
-              {order.user.street} {order.user.number},{" "}
-              {order.user.postalCode} {order.user.city}
-            </p>
-            <p>Payment: {order.user.payment}</p>
-          </div>
+            <td className="p-3 flex gap-2 flex-wrap">
+              <button
+                onClick={() => updateStatus(order._id, "Sent")}
+                className="bg-green-600 text-white px-3 py-1 rounded text-sm"
+              >
+                Sent
+              </button>
 
-          {/* Items */}
-          <div className="mb-3">
-            <p className="font-semibold">Items</p>
-            <ul className="list-disc ml-5">
-              {order.cartItems.map((item) => (
-                <li key={item._id}>
-                  {item.name} × {item.quantity} —{" "}
-                  {item.price * item.quantity} €
-                </li>
-              ))}
-            </ul>
-          </div>
+              <button
+                onClick={() => updateStatus(order._id, "Delivered")}
+                className="bg-blue-600 text-white px-3 py-1 rounded text-sm"
+              >
+                Delivered
+              </button>
 
-          {/* Total */}
-          <p className="font-bold mb-3">
-            Total: {order.totalPrice} €
-          </p>
-
-          {/* Actions */}
-          <div className="flex gap-2 flex-wrap">
-            <button
-              disabled={order.status === "Sent"}
-              onClick={() => updateStatus(order._id, "Sent")}
-              className="bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white px-4 py-1 rounded"
-            >
-              Mark as Sent
-            </button>
-
-            <button
-              disabled={order.status === "Delivered"}
-              onClick={() => updateStatus(order._id, "Delivered")}
-              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-4 py-1 rounded"
-            >
-              Mark as Delivered
-            </button>
-
-            <button
-              onClick={() => deleteOrder(order._id)}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded"
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-      ))}
-    </div>
+              <button
+                onClick={() => deleteOrder(order._id)}
+                className="bg-red-600 text-white px-3 py-1 rounded text-sm"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
   );
 };
 
