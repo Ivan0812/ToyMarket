@@ -11,13 +11,15 @@ const ProductCard = ({ product }) => {
   const isOut = product.quantity === 0;
 
   const handleAdd = () => {
+    if (isOut) return;
+
     setLoading(true);
 
     addToCart({
-      _id: product._id,        // ✅ BITNO
+      _id: product._id,
       name: product.name,
       price: product.price,
-      image: product.images[0],
+      image: Array.isArray(product.images) ? product.images[0] : product.image,
       quantity: 1,
       stock: product.quantity,
       category: product.category,
@@ -45,9 +47,9 @@ const ProductCard = ({ product }) => {
 
       <Link to={`/products/${product._id}`}>
         <img
-          src={product.images?.[0]}
+          src={Array.isArray(product.images) ? product.images[0] : product.image}
           alt={product.name}
-          className="w-full h-60 object-contain  rounded"
+          className="w-full h-60 object-contain rounded"
         />
       </Link>
 
