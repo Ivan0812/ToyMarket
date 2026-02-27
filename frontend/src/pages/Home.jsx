@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import TMLogo from "../components/TMLogo";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -23,13 +24,15 @@ const Home = () => {
 
   return (
     <div className="max-w-8xl mx-auto px-6 md:px-12 py-10">
-      <h1 className="text-4xl md:text-5xl font-bold mb-10 text-center">
-        Welcome to Toy Store 🧸
-      </h1>
+     <div className="flex  gap-3">
+      <h1 className="text-xl font-bold">
+    Used and New Quality Toys for Your Children and You!!
+  </h1>
+    </div>
 
       {/* Featured Slider */}
      {/* Home.jsx: Featured Slider */}
-<div className="overflow-hidden pb-[8%]">
+<div className="overflow-hidden">
   <Swiper
     modules={[Autoplay, Pagination, Navigation]}
     spaceBetween={24}
@@ -48,7 +51,7 @@ const Home = () => {
         <div className="p-4 pb-[9%]">
           <div className="overflow-hidden rounded-lg">
             {/* Hover efekt: podizanje i shadow */}
-            <div className="transition-transform duration-300 hover:-translate-y-2 hover:shadow-lg p-1">
+            <div className="transition-transform duration-300 hover:-translate-y-2 hover:shadow-lg p-14">
               <ProductCard product={product} />
             </div>
           </div>
