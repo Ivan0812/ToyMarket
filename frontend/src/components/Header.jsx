@@ -14,8 +14,8 @@ function Header() {
   ];
 
   return (
-    <header className="bg-blue-500 text-white p-4 h-24">
-      <nav className="flex items-center justify-between max-w-7xl mx-auto">
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-blue-500/90 text-white h-24 flex items-center shadow-md">
+      <nav className="flex items-center justify-between max-w-7xl mx-auto w-full px-4">
 
         <TMLogo />
 
@@ -53,24 +53,29 @@ function Header() {
         
 
         {/* CART */}
-        <Link to="/cart" className="relative inline-flex items-center">
-          <ShoppingCart
-            size={24}
-            className={`transition-transform duration-300 ${
-              cartAnimation ? "scale-125 text-yellow-300" : ""
-            }`}
-          />
+       {/* CART */}
+{/* CART */}
+<Link
+  to="/cart"
+  className="relative flex items-center justify-center w-11 h-11 bg-blue-600 hover:bg-blue-700 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+>
+  <ShoppingCart
+    size={20}
+    className={`transition-transform duration-300 ${
+      cartAnimation ? "scale-125 text-yellow-300" : "text-white"
+    }`}
+  />
 
-          {cart.length > 0 && (
-            <span
-              className={`absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center transition-transform duration-300 ${
-                cartAnimation ? "scale-125" : ""
-              }`}
-            >
-              {cart.reduce((acc, item) => acc + item.quantity, 0)}
-            </span>
-          )}
-        </Link>
+  {cart.length > 0 && (
+    <span
+      className={`absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center transition-transform duration-300 ${
+        cartAnimation ? "scale-125" : ""
+      }`}
+    >
+      {cart.reduce((acc, item) => acc + item.quantity, 0)}
+    </span>
+  )}
+</Link>
       </nav>
     </header>
   );
