@@ -9,18 +9,21 @@ dotenv.config();
 
 const app = express();
 
-app.use("/images", express.static("images"));
+
 app.use(cors());
 app.use(express.json());
-
-app.use("/api/toys", toyRoutes);
-app.use("/api/orders", orderRoutes);
 
 // app.js ili server.js
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`, req.body);
     next();
   });
+app.use("/images", express.static("images"));
+
+app.use("/api/toys", toyRoutes);
+app.use("/api/orders", orderRoutes);
+
+
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
