@@ -12,7 +12,7 @@ const AdminOrders = () => {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3000/api/orders");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`);
 
       if (!res.ok) {
         throw new Error("Failed to fetch orders");
@@ -31,7 +31,7 @@ const AdminOrders = () => {
   const updateStatus = async (id, status) => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/orders/${id}/status`,
+        `${import.meta.env.VITE_API_URL}/api/orders/${id}/status`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -57,9 +57,8 @@ const AdminOrders = () => {
     if (!confirm) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/api/orders/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}`, { method: "DELETE" })
+      
 
       if (!res.ok) {
         throw new Error("Failed to delete order");

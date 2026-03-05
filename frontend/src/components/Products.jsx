@@ -11,7 +11,7 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/toys");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/toys`)
         if (!res.ok) throw new Error("Failed to fetch products");
         const data = await res.json();
 

@@ -13,7 +13,7 @@ const Home = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/toys")
+    fetch(`${import.meta.env.VITE_API_URL}/api/toys`)
       .then((res) => res.json())
       .then((data) => setProducts(data.slice(0, 6)));
   }, []);
