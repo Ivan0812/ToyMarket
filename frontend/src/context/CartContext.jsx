@@ -1,4 +1,3 @@
-// src/context/CartContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext();
@@ -45,8 +44,8 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  const removeFromCart = (id) => {
-    setCart(prevCart => prevCart.filter(item => item.id !== id));
+  const removeFromCart = (_id) => {
+    setCart((prevCart) => prevCart.filter((item) => item._id !== _id));
   };
 
   const updateQuantity = (_id, quantity, stock) => {
