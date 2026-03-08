@@ -7,11 +7,12 @@ import { Autoplay } from "swiper/modules";
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [featured, setFeatured] = useState([]);
-
+  console.log("API URL:", import.meta.env.VITE_API_URL);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/toys`)
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/toys`);
+        console.log("Fetching from:", `${import.meta.env.VITE_API_URL}/api/toys`);
         if (!res.ok) throw new Error("Failed to fetch products");
         const data = await res.json();
 
