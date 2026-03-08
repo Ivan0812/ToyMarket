@@ -5,7 +5,7 @@ The project was built as a portfolio and learning project, with a focus on real-
 
 ## Live Demo
 
-- **Frontend:** [Add your Netlify link here](YOUR_NETLIFY_LINK_HERE)
+- **Frontend:** https://toym.netlify.app/
 - **Backend API:** [https://toymarket.onrender.com](https://toymarket.onrender.com)
 
 ## Features
