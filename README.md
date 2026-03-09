@@ -1,9 +1,11 @@
-# ToyMarket 🧸
+# ToyMarket 
 
 ToyMarket is a full-stack e-commerce web application for selling new and used toys.  
 The project was built as a portfolio and learning project, with a focus on real-world full-stack functionality such as product browsing, cart management, checkout flow, stock updates, and admin order handling.
 
 ## Live Demo
+
+<img width="1350" height="799" alt="toymarket-preview" src="https://github.com/user-attachments/assets/96fb9d66-f07d-4ded-99dc-d9abca27b217" />
 
 - **Frontend:** https://toym.netlify.app/
 - **Backend API:** [https://toymarket.onrender.com](https://toymarket.onrender.com)
