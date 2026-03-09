@@ -8,8 +8,13 @@ The project was built as a portfolio and learning project, with a focus on real-
 
 
 
+# ToyMarket 🧸
 
-![ToyMarket Preview](frontend/public/images/toymarket-preview.png)
+<p align="center">
+  <img src="frontend/public/images/toymarket-preview.png" width="650"/>
+</p>
+
+ToyMarket is a full-stack toy marketplace built with React, Node.js, Express and MongoDB.
 
 
 
@@ -63,24 +68,24 @@ The project was built as a portfolio and learning project, with a focus on real-
 ## Project Structure
 
 ```bash
-ToyMarket/
-├── backend/
-│   ├── src/
-│   │   ├── models/
-│   │   ├── routes/
+ToyMarket
+│
+├── backend
+│   ├── src
+│   │   ├── controllers
+│   │   ├── models
+│   │   ├── routes
 │   │   └── index.js
-│   └── package.json
 │
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── pages/
+├── frontend
+│   ├── public
+│   │   └── images
+│   ├── src
+│   │   ├── components
+│   │   ├── context
+│   │   ├── pages
 │   │   └── App.jsx
-│   └── package.json
-│
-└── README.md
+
 
 -- Backend --
 cd backend
