@@ -8,11 +8,13 @@ The project was built as a portfolio and learning project, with a focus on real-
 
 
 
-# ToyMarket 🧸
 
 <p align="center">
   <img src="frontend/public/images/toymarket-preview.png" width="650"/>
 </p>
+
+
+
 
 ToyMarket is a full-stack toy marketplace built with React, Node.js, Express and MongoDB.
 
