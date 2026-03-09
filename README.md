@@ -16,8 +16,6 @@ The project was built as a portfolio and learning project, with a focus on real-
 
 
 
-ToyMarket is a full-stack toy marketplace built with React, Node.js, Express and MongoDB.
-
 
 
 
