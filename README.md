@@ -35,7 +35,7 @@ The project was built as a portfolio and learning project, with a focus on real-
 - Tailwind CSS
 - Framer Motion
 - Swiper.js
-- Lucide React
+
 
 ### Backend
 - Node.js
@@ -76,3 +76,44 @@ ToyMarket/
 cd backend
 npm install
 npm run dev
+
+--Frontend--
+cd ../frontend
+npm install
+npm run dev
+
+What I Learned
+
+During this project I practiced:
+	•	building a full-stack web application
+	•	developing REST APIs
+	•	using React Context for state management
+	•	implementing cart and stock logic
+	•	building admin functionality
+	•	debugging real deployment issues
+	•	deploying frontend and backend separately
+	•	integrating MongoDB Atlas
+	•	working with environment variables
+
+
+
+Future Improvements
+
+Possible improvements:
+	•	user authentication
+	•	admin login
+	•	product management dashboard
+	•	payment integration
+	•	product search and filtering
+	•	image upload
+	•	improved error handling
+
+
+
+Author
+
+Ivan
+
+GitHub
+https://github.com/Ivan0812
+
